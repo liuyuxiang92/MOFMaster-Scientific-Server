@@ -21,10 +21,6 @@ To run as the modern HTTP server (Streamable HTTP):
 python main.py
 ```
 
-To run in the standard local mode (stdio):
-```bash
-python main.py --transport stdio
-```
 
 ## 🧪 Testing the Server
 

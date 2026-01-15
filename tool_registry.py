@@ -5,7 +5,7 @@ This module provides a production-ready tool registration system with metadata,
 validation, and automatic discovery.
 """
 
-from typing import Callable, Dict, List, Optional, Any
+from typing import Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 

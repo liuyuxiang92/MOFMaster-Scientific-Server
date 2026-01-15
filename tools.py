@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import List, Optional, Dict, Any
 from enum import Enum
 
-from pydantic import BaseModel, Field, field_validator, ValidationError
+from pydantic import BaseModel, Field, field_validator, ValidationError, ConfigDict
 
 # Optional ASE integration
 try:
@@ -27,12 +27,11 @@ except ImportError:
 
 class MOFRecord(BaseModel):
     """Model representing a single MOF database record."""
+    model_config = ConfigDict(frozen=True)
+    
     name: str = Field(..., min_length=1, description="MOF name")
     formula: str = Field(..., min_length=1, description="Chemical formula")
     surface_area: float = Field(..., gt=0, description="Surface area in m²/g")
-
-    class Config:
-        frozen = True
 
 
 class SearchMOFsInput(BaseModel):

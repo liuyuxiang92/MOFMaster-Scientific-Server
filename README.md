@@ -1,6 +1,6 @@
 # MOF Tools MCP Server
 
-A **production-ready**, professional MCP server for Metal-Organic Framework (MOF) research. This server uses the **SSE (Server-Sent Events)** transport to provide scientific tools over HTTP with comprehensive **Pydantic validation** and a **formal tool registry system**.
+A **production-ready**, professional MCP server for Metal-Organic Framework (MOF) research. This server uses the **Streamable HTTP** transport to provide scientific tools over HTTP with comprehensive **Pydantic validation** and a **formal tool registry system**.
 
 ## ✨ Key Features
 
@@ -8,7 +8,7 @@ A **production-ready**, professional MCP server for Metal-Organic Framework (MOF
 - **📋 Formal Tool Registry**: Centralized tool management with metadata, categories, and tags
 - **🛡️ Production-Ready**: Industry-standard code with comprehensive error handling
 - **📊 Type Safety**: Full type hints throughout the codebase
-- **✅ Tested**: Comprehensive test suite with 33 tests
+- **✅ Tested**: Comprehensive test suite with over 35 tests
 
 ## 📁 Repository Structure
 
@@ -17,6 +17,7 @@ A **production-ready**, professional MCP server for Metal-Organic Framework (MOF
 - `tool_registry.py`: Formal tool registration system with metadata management
 - `tool_definitions.yaml`: YAML configuration file defining all available tools and their metadata
 - `tests/test_tools.py`: Comprehensive test suite for tools and validation
+- `tests/test_tools_load.py`: Load and consistency tests for tool definitions
 - `pyproject.toml`: Dependency and package management
 
 ## 🚀 Installation
@@ -38,9 +39,9 @@ The server will start on `http://0.0.0.0:8080` and display registered tools info
 ```
 === MOF Tools Server ===
 Registered 3 tools:
-  - search_mofs (search)  
-  - calculate_energy (calculation) [ASE Required]
-  - optimize_structure (optimization) [EXPERIMENTAL]
+  - search_mofs (search)
+  - calculate_energy (calculation)
+  - optimize_structure (optimization)
 
 Tools by category:
   search: 1 tool(s)
@@ -55,13 +56,11 @@ Run the comprehensive test suite:
 
 ```bash
 # Run all tests
-pytest tests/test_tools.py -v
+PYTHONPATH=. pytest tests/ -v
 
-# Run specific test class
-pytest tests/test_tools.py::TestPydanticModels -v
-
-# Run with coverage
-pytest tests/test_tools.py --cov=tools --cov=tool_registry
+# Run specific test file
+PYTHONPATH=. pytest tests/test_tools.py -v
+PYTHONPATH=. pytest tests/test_tools_load.py -v
 ```
 
 ## 🧪 Testing the Server
@@ -91,7 +90,7 @@ All tools return validated JSON responses with comprehensive error handling.
 **Input**:
 ```json
 {
-  "query": "MOF-5"  // String, 1-200 characters
+  "query": "MOF-5"
 }
 ```
 
@@ -114,13 +113,12 @@ All tools return validated JSON responses with comprehensive error handling.
 ### calculate_energy
 
 **Category**: Calculation  
-**Requirements**: ASE library  
 **Description**: Calculate the potential energy of a structure from CIF file content or path using ASE
 
 **Input**:
 ```json
 {
-  "data": "<CIF file content or path>"  // String, non-empty
+  "data": "<CIF file content or path>"
 }
 ```
 
@@ -137,13 +135,12 @@ All tools return validated JSON responses with comprehensive error handling.
 ### optimize_structure
 
 **Category**: Optimization  
-**Status**: Experimental  
 **Description**: Perform structure optimization for a named MOF structure (placeholder implementation)
 
 **Input**:
 ```json
 {
-  "name": "HKUST-1"  // String, 1-200 characters
+  "name": "HKUST-1"
 }
 ```
 
@@ -180,8 +177,6 @@ The formal tool registry provides:
 - **Metadata Management**: Description, category, version, tags for each tool
 - **Categorization**: Tools organized by category (search, calculation, optimization, analysis)
 - **Tag-based Discovery**: Find tools by tags (e.g., "mof", "energy", "database")
-- **Dependency Tracking**: Mark tools that require specific libraries (e.g., ASE)
-- **Status Indicators**: Mark experimental or production-ready tools
 
 ### Production-Ready Features
 
@@ -190,7 +185,7 @@ The formal tool registry provides:
 - ✅ Input sanitization and validation
 - ✅ Consistent JSON output format
 - ✅ Detailed documentation
-- ✅ Test coverage (33 tests)
+- ✅ Test coverage (38 tests)
 - ✅ Modular, maintainable code structure
 
 ## 📚 Development
@@ -206,8 +201,6 @@ tools:
     description: Tool description
     category: CALCULATION
     function_name: my_tool  # Function name in tools.py
-    requires_ase: false
-    is_experimental: false
     tags:
       - tag1
       - tag2
@@ -244,8 +237,6 @@ def my_tool(param: str) -> str:
     description: Tool description
     category: CALCULATION
     function_name: my_tool
-    requires_ase: false
-    is_experimental: false
     tags:
       - tag1
       - tag2
@@ -253,7 +244,6 @@ def my_tool(param: str) -> str:
 ```
 
 The tool will be automatically registered when the server starts.
-```
 
 4. **Add tests** in `test_tools.py`:
 ```python

@@ -10,6 +10,7 @@ from pathlib import Path
 import yaml
 
 from mcp.server.fastmcp import FastMCP
+from dp.agent.server.calculation_mcp_server import CalculationMCPServer
 
 from tool_registry import ToolRegistry, ToolCategory, get_registry
 import tools
@@ -86,8 +87,6 @@ def register_tools_in_registry():
             description=tool_def['description'],
             category=category,
             function=tool_function,
-            requires_ase=tool_def['requires_ase'],
-            is_experimental=tool_def['is_experimental'],
             tags=tool_def['tags'],
             version=tool_def['version']
         )
@@ -95,15 +94,16 @@ def register_tools_in_registry():
 
 def register_tools_with_mcp(mcp: FastMCP, registry: ToolRegistry):
     """
-    Register tools from the registry with the FastMCP server.
+    Register tools from the registry with the FastMCP server using CalculationMCPServer.
     
-    Args:
-        mcp: FastMCP server instance
-        registry: Tool registry containing registered tools
+    This wrapper automatically adds "submit_", "query_job_status", and 
+    "get_job_results" tools required by the Bohr Agent SDK.
     """
+    calc_server = CalculationMCPServer(mcp)
     for tool_metadata in registry.get_all():
-        # Register each tool function with FastMCP
-        mcp.tool()(tool_metadata.function)
+        # Register each tool function with CalculationMCPServer
+        calc_server.tool()(tool_metadata.function)
+    return calc_server
 
 
 def print_registered_tools(registry: ToolRegistry):
@@ -117,11 +117,8 @@ def print_registered_tools(registry: ToolRegistry):
     print(f"Registered {len(registry)} tools:", file=sys.stderr)
     
     for tool_metadata in registry.get_all():
-        status = "[EXPERIMENTAL]" if tool_metadata.is_experimental else ""
-        ase_req = "[ASE Required]" if tool_metadata.requires_ase else ""
         print(
-            f"  - {tool_metadata.name} ({tool_metadata.category.value}) "
-            f"{status} {ase_req}",
+            f"  - {tool_metadata.name} ({tool_metadata.category.value})",
             file=sys.stderr
         )
         print(f"    {tool_metadata.description}", file=sys.stderr)
@@ -135,17 +132,15 @@ def print_registered_tools(registry: ToolRegistry):
 # Initialize server and registry
 mcp = initialize_server()
 register_tools_in_registry()
-register_tools_with_mcp(mcp, get_registry())
+calc_server = register_tools_with_mcp(mcp, get_registry())
 
 
 if __name__ == "__main__":
     # Print registered tools info
     print_registered_tools(get_registry())
     
-    # The 'run()' method automatically handles CLI arguments like --transport
-    # To run as HTTP by default in code, we can pass transport="streamable-http"
-    # or just let the user use 'python main.py --transport streamable-http'
+    # Use calc_server.run to include health check endpoint and correct tool patches
     if len(sys.argv) == 1:
-        mcp.run(transport="streamable-http")
+        calc_server.run(transport="streamable-http")
     else:
-        mcp.run()
+        calc_server.run()

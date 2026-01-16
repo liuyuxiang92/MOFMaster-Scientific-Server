@@ -413,8 +413,6 @@ class TestToolRegistry:
         assert categories[ToolCategory.CALCULATION] == 0
 
 
-
-
 class TestYAMLConfiguration:
     """Test YAML configuration loading."""
     
@@ -445,8 +443,6 @@ class TestYAMLConfiguration:
             assert 'description' in tool_def
             assert 'category' in tool_def
             assert 'function_name' in tool_def
-            assert 'requires_ase' in tool_def
-            assert 'is_experimental' in tool_def
             assert 'tags' in tool_def
             assert 'version' in tool_def
             
@@ -455,8 +451,6 @@ class TestYAMLConfiguration:
             assert isinstance(tool_def['description'], str)
             assert isinstance(tool_def['category'], str)
             assert isinstance(tool_def['function_name'], str)
-            assert isinstance(tool_def['requires_ase'], bool)
-            assert isinstance(tool_def['is_experimental'], bool)
             assert isinstance(tool_def['tags'], list)
             assert isinstance(tool_def['version'], str)
     

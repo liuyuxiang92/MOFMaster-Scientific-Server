@@ -6,8 +6,6 @@ tools:
     description: Search for Metal-Organic Frameworks by name or formula in the database
     category: SEARCH
     function_name: search_mofs
-    requires_ase: false
-    is_experimental: false
     tags:
       - mof
       - database
@@ -19,8 +17,6 @@ tools:
     description: Calculate the potential energy of a structure from CIF file content or path using ASE
     category: CALCULATION
     function_name: calculate_energy
-    requires_ase: true
-    is_experimental: false
     tags:
       - energy
       - calculation
@@ -32,8 +28,6 @@ tools:
     description: Perform structure optimization for a named MOF structure (placeholder implementation)
     category: OPTIMIZATION
     function_name: optimize_structure
-    requires_ase: false
-    is_experimental: true
     tags:
       - optimization
       - structure

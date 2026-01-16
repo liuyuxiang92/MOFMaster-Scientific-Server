@@ -1,10 +1,3 @@
-"""
-Tool Registry - Formal registration system for MCP tools.
-
-This module provides a production-ready tool registration system with metadata,
-validation, and automatic discovery.
-"""
-
 from typing import Callable, Dict, List, Optional
 from dataclasses import dataclass, field
 from enum import Enum
@@ -25,8 +18,6 @@ class ToolMetadata:
     description: str
     category: ToolCategory
     function: Callable
-    requires_ase: bool = False
-    is_experimental: bool = False
     tags: List[str] = field(default_factory=list)
     version: str = "1.0.0"
     
@@ -61,8 +52,6 @@ class ToolRegistry:
         description: str,
         category: ToolCategory,
         function: Callable,
-        requires_ase: bool = False,
-        is_experimental: bool = False,
         tags: Optional[List[str]] = None,
         version: str = "1.0.0"
     ) -> ToolMetadata:
@@ -74,8 +63,6 @@ class ToolRegistry:
             description: Human-readable description
             category: Tool category
             function: The callable function implementing the tool
-            requires_ase: Whether the tool requires ASE library
-            is_experimental: Whether the tool is experimental
             tags: Optional list of tags for categorization
             version: Tool version
             
@@ -93,8 +80,6 @@ class ToolRegistry:
             description=description,
             category=category,
             function=function,
-            requires_ase=requires_ase,
-            is_experimental=is_experimental,
             tags=tags or [],
             version=version
         )

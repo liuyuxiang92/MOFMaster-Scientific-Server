@@ -140,10 +140,10 @@ def search_mofs(query: str) -> str:
         ValidationError: If input validation fails
     """
     try:
-        #for debug 
+        # for debug
         from datetime import datetime
         with open("./search_mofs_debug.txt", "a") as f:
-            f.write(f"[{datetime.now().isoformat()}]", f"query ={query}")
+            f.write(f"[{datetime.now().isoformat()}] query={query}\n")
 
         # Validate input
         validated_input = SearchMOFsInput(query=query)

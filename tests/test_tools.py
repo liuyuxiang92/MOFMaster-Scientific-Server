@@ -38,7 +38,7 @@ _atom_site_fract_z
 Cu1 Cu 0.0 0.0 0.0
 Cu2 Cu 0.5 0.5 0.5
 """
-        result = parse_structure(cif_data, format="cif")
+        result = parse_structure(cif_data)
         parsed = json.loads(result)
         
         assert parsed["success"] is True
@@ -48,7 +48,7 @@ Cu2 Cu 0.5 0.5 0.5
     
     def test_parse_structure_invalid_data(self):
         """Test parsing invalid data."""
-        result = parse_structure("invalid data", format="cif")
+        result = parse_structure("invalid data")
         parsed = json.loads(result)
         
         assert parsed["success"] is False
@@ -56,7 +56,7 @@ Cu2 Cu 0.5 0.5 0.5
     
     def test_parse_structure_empty_data(self):
         """Test parsing empty data."""
-        result = parse_structure("   ", format="cif")
+        result = parse_structure("   ")
         parsed = json.loads(result)
         
         assert parsed["success"] is False
@@ -376,7 +376,7 @@ _atom_site_fract_z
 Cu1 Cu 0.0 0.0 0.0
 Cu2 Cu 0.5 0.5 0.5
 """
-        parse_result = parse_structure(cif_data, format="cif")
+        parse_result = parse_structure(cif_data)
         parsed = json.loads(parse_result)
         assert parsed["success"] is True
         
@@ -406,7 +406,7 @@ _atom_site_fract_z
 Cu1 Cu 0.0 0.0 0.0
 Cu2 Cu 0.5 0.5 0.5
 """
-        parse_result = parse_structure(cif_data, format="cif")
+        parse_result = parse_structure(cif_data)
         parsed = json.loads(parse_result)
         assert parsed["success"] is True
         

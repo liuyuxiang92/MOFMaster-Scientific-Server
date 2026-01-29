@@ -61,8 +61,16 @@ def parse_structure(data: str) -> str:
             is_file_content = "\n" in validated_input.data or not os.path.isfile(validated_input.data)
             
             if is_file_content:
-                fileobj = StringIO(validated_input.data)
-                atoms = ase.io.read(fileobj)
+                content = validated_input.data
+                # Internal guess for formats that fail auto-detection from StringIO
+                read_format = None
+                if "data_" in content or "_cell_length_a" in content:
+                    read_format = 'cif'
+                elif content.strip().split('\n')[0].strip().isdigit():
+                    read_format = 'xyz'
+                
+                fileobj = StringIO(content)
+                atoms = ase.io.read(fileobj, format=read_format)
             else:
                 # Assume it's a file path
                 atoms = ase.io.read(validated_input.data)

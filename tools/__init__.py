@@ -15,6 +15,7 @@ from .static_calculation import static_calculation
 from .optimize_geometry import optimize_geometry
 from .predict_bandgap import predict_bandgap
 from .fetch_structure import fetch_structure
+from .predict_adsorption import predict_adsorption
 
 __all__ = [
     'parse_structure',
@@ -22,6 +23,7 @@ __all__ = [
     'optimize_geometry',
     'predict_bandgap',
     'fetch_structure',
+    'predict_adsorption',
 ]
 
 __version__ = '1.0.0'

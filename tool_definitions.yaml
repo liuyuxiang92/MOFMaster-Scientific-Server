@@ -56,3 +56,13 @@ tools:
       - fetch
       - structure
     version: "1.0.0"
+
+  - name: Gas Adsorption Predictor
+    description: Predict the adsorption amount of gas molecules (CO2, H2, Ar, N2, CH4, Xe) in MOF structures at specific pressure and temperature using a DPA-based property model.
+    category: CALCULATION
+    function_name: predict_adsorption
+    tags:
+      - adsorption
+      - gas
+      - prediction
+    version: "1.0.0"
